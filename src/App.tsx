@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import NumberList from "./feature/number-list";
+import FileDropper from "./feature/drag-drop";
+import RainWaterVisualizer from "./feature/rainwater";
+
+const TABS = [
+  {
+    id: 1,
+    name: "Test 1",
+    value: 1,
+  },
+  {
+    id: 2,
+    name: "Test 2",
+    value: 2,
+  },
+  {
+    id: 3,
+    name: "Test 3",
+    value: 3,
+  },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentTab, setCurrentTab] = useState(1);
+
+  const getComponent = (tab: number) => {
+    if (tab === 1) {
+      return <NumberList />;
+    }
+    if (tab === 2) {
+      return <FileDropper />;
+    }
+    if (tab === 3) {
+      return <RainWaterVisualizer />;
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="h-screen w-full ">
+      <div className="flex items-center justify-center gap-x-3">
+        {TABS.map((tab) => (
+          <div
+            className={`px-8 py-4 ${
+              currentTab === tab.value
+                ? "bg-[#FF4238]/50"
+                : "border border-[#FF4238]/50"
+            } text-white rounded-md cursor-pointer`}
+            key={tab.id}
+            onClick={() => setCurrentTab(tab.value)}
+          >
+            {tab.name}
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="mt-20 w-full min-h-[600px] border border-[#FF4238]/50 flex items-center justify-center">
+        {getComponent(currentTab)}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
